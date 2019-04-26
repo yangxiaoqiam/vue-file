@@ -13,16 +13,22 @@
 <script>
 export default {
   //组件内守卫
-  beforeRouteEnter(to, from, next) {
-    const answer = confirm('你还没有登录，要登陆后才能浏览信息，要登录吗？')
-    if (answer) {
-      next({
-        name: 'personal'
-      });
-    } else {
-      next(false)
-    }
-  },
+  // beforeRouteEnter(to, from, next) {
+    //   const whetherLoing=to.matched[0].meta.login;
+    //   if(whetherLoing){
+    //       next();
+    //       return;
+    //   }
+
+    // const answer = confirm('你还没有登录，要登陆后才能浏览信息，要登录吗？')
+    // if (answer) {
+    //   next({
+    //     name: 'personal'
+    //   });
+    // } else {
+    //   next(false)
+    // }
+  // },
   data() {
     return {
       questionList: [{

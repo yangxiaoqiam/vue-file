@@ -1,4 +1,5 @@
 <template>
+
   <div>
       <button @click="handleClick">{{loginFlag ? '退出':'登录'}}</button>
   </div>
@@ -12,6 +13,7 @@ export default {
   },
   created() {
     this.loginFlag = this.$route.matched[0].meta.login;
+    console.log(12,this.User)
   },
   methods: {
     handleClick() {

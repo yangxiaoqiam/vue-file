@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import adminUser from './global'
 import './assets/styles/reset.css'
 Vue.config.productionTip = false
+
+Vue.prototype.User = adminUser
+
     //路由
     // import Router from 'vue-router'
     // import Home from './views/Home.vue'
