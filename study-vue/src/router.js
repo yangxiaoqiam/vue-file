@@ -54,6 +54,9 @@ const router = new Router({
             name: 'community',
             component: Community,
             redirect: '/community/academic',
+            meta:{
+                login:false
+            },
             children: [{
                     path: 'download',
                     name: 'download',
@@ -68,16 +71,16 @@ const router = new Router({
                     name: 'academic',
                     component: Academic,
                     //独享守卫
-                    beforeEnter(to,from, next) {
-                        const answer = confirm('你还没有登录，要登陆后才能浏览信息，要登录吗？')
-                        if (answer) {
-                            next({
-                                name: 'personal'
-                            });
-                        } else {
-                            next(false)
-                        }
-                    }
+                    // beforeEnter(to,from, next) {
+                    //     const answer = confirm('你还没有登录，要登陆后才能浏览信息，要登录吗？')
+                    //     if (answer) {
+                    //         next({
+                    //             name: 'personal'
+                    //         });
+                    //     } else {
+                    //         next(false)
+                    //     }
+                    // }
                 }
             ]
         }, {
@@ -102,8 +105,9 @@ const router = new Router({
     ],
     mode: 'history'
 })
-// router.beforeEach((to,from,next)=>{
 
+//全局守卫
+// router.beforeEach((to,from,next)=>{
 //     if(to.path==='/community/academic'){
 //        const answer =confirm('你还没有登录，要登陆后才能浏览信息，要登录吗？')
 //        if(answer){
