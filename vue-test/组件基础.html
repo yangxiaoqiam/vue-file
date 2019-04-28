@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=yes">
+    <!-- 格式检测 :telephone=no禁止了把数字转化为拨号链接-->
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- 禁用链接高亮 -->
+    <meta name="theme-color" content="#2196f3">
+    <title>vue-test</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    ul {
+        list-style: none;
+        margin-left: 20px;
+    }
+    
+    p.active {
+        background: pink;
+    }
+    
+    li {
+        margin-bottom: 20px;
+    }
+    
+    li>div {
+        display: inline-block;
+        margin-right: 10px;
+        vertical-align: top;
+    }
+    
+    .img-box {
+        position: relative
+    }
+    
+    .img-box span {
+        position: absolute;
+        width: 100%;
+        background: rgba(0, 0, 0, .5);
+        left: 0;
+        bottom: 0;
+        color: #fff;
+        padding: 5px 0;
+        font-size: 12px;
+    }
+    
+    img {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .free {
+        color: green;
+    }
+    
+    .price {
+        color: red
+    }
+    
+    .choose {
+        opacity: .3;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <course-list :list="courselist" :ceshi="ceshi1" @price="getPrice" @click.native="onClick"></course-list>
+
+        合计：{{price}}
+
+
+    </div>
+    <!-- built files will be auto injected -->
+</body>
+<script>
+    //全局组件
+    // Vue.component('aTist', {
+    //     template: '<div>listqq</div>'
+    // })
+
+    //局部组件
+    const courselist = {
+        props: {
+            list: {
+                type: Array,
+                default: [],
+                required: true
+            },
+            ceshi: Number
+        },
+        data() {
+            return {
+                totalPriceArr: [],
+                totalPrice: [],
+                alreadyHas: [],
+                number: this.ceshi,
+                courseList: this.list.concat()
+            }
+        },
+        template: '<ul>{{number}}' +
+            '<li v-for="(item,index) in  courseList" :key="item.name"  @click="addTobuy(index,item.price)" :class="{choose:alreadyHas[index]}" @contextmenu.prevent="removeBuy(index,item.price)">' +
+            '<div class = "img-box" >' +
+            ' <img :src="item.poster" alert="icon">' +
+            '<span v-if="item.enrollment">{{item.enrollment}}人報名</span>' +
+            '<span v-if="item.buyNumber">{{item.buyNumber}}人购买</span>' +
+            '</div>' +
+            '<div class = "content-box">' +
+            '<div class = "title" >{{item.name}}</div>' +
+            '<div class="free" v-if="item.free"> 免费 </div > ' +
+            '<div class = "play-back" v-if="item.palyBack" > 回放 </div>' +
+            '<div class="price" v-if="item.price"> ${{item.price}}</div> ' +
+            '</div>' +
+            '</li>' +
+            '</ul>',
+        methods: {
+            addTobuy(index, price) {
+                // if (!this.alreadyHas[index]) {
+                //     this.totalPriceArr.push(price);
+                //     this.$set(this.alreadyHas, index, true);
+                //     console.log("his.alreadyHas:" + this.alreadyHas)
+                //     this.getTotalPrice();
+                // } else {
+                //     return;
+                // }
+                this.number--;
+                this.courseList.splice(index, 1)
+
+
+            },
+            removeBuy(index, price) {
+                if (!this.alreadyHas[index]) {
+                    return;
+                }
+                console.log("totalPriceArr1:" + this.totalPriceArr);
+                const totalpriceIndex = this.totalPriceArr.findIndex(item => {
+                    return item == price;
+                })
+                this.alreadyHas.splice(index, 1, false)
+                this.totalPriceArr.splice(totalpriceIndex, 1)
+                this.getTotalPrice();
+            },
+            getTotalPrice() {
+                if (this.totalPriceArr.length > 0) {
+
+                    this.totalPrice = this.totalPriceArr.reduce((prev, cur) => {
+                        return prev + cur
+                    })
+                } else {
+                    this.totalPrice = 0;
+                }
+                console.log("totalPrice:" + this.totalPrice);
+                this.$emit('price', this.totalPrice);
+
+            }
+
+        }
+    }
+    const vm = new Vue({
+        el: '#app',
+        //局部组件
+        components: {
+            courseList: courselist
+        },
+        data: {
+            price: 0,
+            ceshi1: 10,
+            courselist: [{
+                name: 'b标题1',
+                free: true,
+                price: 200,
+                buyNumber: 0,
+                enrollment: 400,
+                poster: "http://pic2.52pk.com/files/allimg/090626/1553504U2-2.jpg"
+            }, {
+                name: 'b标题2',
+                free: false,
+                price: 100,
+                buyNumber: 0,
+                enrollment: 400,
+                poster: "http://pic2.52pk.com/files/allimg/090626/1553504U2-2.jpg"
+            }, {
+                name: 'b标题3',
+                free: true,
+                price: 0,
+                buyNumber: 0,
+                enrollment: 400,
+                poster: "http://pic2.52pk.com/files/allimg/090626/1553504U2-2.jpg"
+            }, {
+                name: 'b标题4',
+                free: true,
+                price: 0,
+                buyNumber: 0,
+                enrollment: 400,
+                poster: "http://pic2.52pk.com/files/allimg/090626/1553504U2-2.jpg"
+            }]
+        },
+        methods: {
+            getPrice(price) {
+                this.price = price;
+            },
+            onClick() {
+                console.log('111');
+            }
+        }
+
+
+    })
+</script>
+
+</html>

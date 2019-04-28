@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import adminUser from './global'
+
 import './assets/styles/reset.css'
 Vue.config.productionTip = false
+import defines from './global'
 
-Vue.prototype.User = adminUser
+Vue.prototype.defines = defines
+Vue.prototype.bus=new Vue();
 
     //路由
     // import Router from 'vue-router'
@@ -26,7 +28,7 @@ Vue.prototype.User = adminUser
     //     ],
     //     mode: 'history'
     // })
-new Vue({
+var app = new Vue({
     router,
     //router: myRouter,
     render: h => h(App)

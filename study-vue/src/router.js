@@ -13,6 +13,8 @@ import Academic from './components/community/Academic.vue'
 import Question from './components/community/Question.vue'
 import Err from './components/Err.vue'
 
+import User from './global'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -21,6 +23,9 @@ const router = new Router({
     routes: [{
             path: '/home',
             name: 'home',
+            meta: {
+                login: false
+            },
             //alias:'/home',别名
             components: {
                 default: Home,
@@ -54,8 +59,8 @@ const router = new Router({
             name: 'community',
             component: Community,
             redirect: '/community/academic',
-            meta:{
-                login:false
+            meta: {
+                login: false
             },
             children: [{
                     path: 'download',
@@ -107,19 +112,20 @@ const router = new Router({
 })
 
 //全局守卫
-// router.beforeEach((to,from,next)=>{
-//     if(to.path==='/community/academic'){
-//        const answer =confirm('你还没有登录，要登陆后才能浏览信息，要登录吗？')
-//        if(answer){
-//         next({name:'personal'});
-//        } else{
-//         next(false)
-//        }
-//     } else{
-//         next()
-//     }
 
-// })
+router.beforeEach((to, from, next) => {
+    if(to.path==='/community/academic'){
+       if(!User.login){
+        next({name:'personal'});
+       } else{
+        next(false)
+       }
+    } else{
+        next()
+    }
+ 
+    console.log("User.login:"+User.login)
 
+})
 
 export default router;

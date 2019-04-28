@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=yes">
+    <!-- 格式检测 :telephone=no禁止了把数字转化为拨号链接-->
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- 禁用链接高亮 -->
+    <meta name="theme-color" content="#2196f3">
+    <title>vue-test</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <button @click="changeCmp">切换</button>
+        <cmp-one v-if="showone"><span slot="after">slotss</span></cmp-one>
+        <cmp-two :list="list">
+            <template slot-scope="list">
+               <li> {{list.item}}-{{list.index}}</li>
+            </template>
+        </cmp-two>
+        <cmp-two :list="list">
+            <template slot-scope="list">
+               <li> {{list.item}}yyy{{list.index}}</li>
+            </template>
+        </cmp-two>
+        <!-- <keep-alive>
+            <component :is="type"></component>
+        </keep-alive> -->
+
+
+    </div>
+
+</body>
+<script>
+    const cmpOne = {
+        template: `<div>
+                         <slot name="before"></slot> 
+                        组件1: <input type = "value" >
+                        <slot name="after"></slot> 
+                  </div>`
+    }
+    const cmpTwo = {
+        props: ["list"],
+        template: `<div>组件2:<input type="value">
+                      <ul>
+                         <slot v-for="(item,index) in list"  :item="item" :index="index"></slot>
+                      </ul>
+                   </div>`
+    }
+    const vm = new Vue({
+        el: '#app',
+        //局部组件
+        components: {
+            cmpOne: cmpOne,
+            cmpTwo: cmpTwo
+        },
+        data: {
+            showone: true,
+            type: 'cmp-one',
+            list: [1, 2, 3, 4]
+
+        },
+        methods: {
+            changeCmp() {
+                this.type = this.type == 'cmp-one' ? 'cmp-two' : 'cmp-one'
+            }
+        }
+
+
+    })
+</script>
+
+</html>

@@ -1,24 +1,24 @@
 <template>
 
   <div>
-      <button @click="handleClick">{{loginFlag ? '退出':'登录'}}</button>
+    <button @click="handleClick">{{loginFlag ? '退出':'登录'}}</button>
   </div>
 </template>
     <script>
 export default {
   data() {
     return {
-      loginFlag: false
+      loginFlag: this.defines.login
     }
   },
   created() {
-    this.loginFlag = this.$route.matched[0].meta.login;
-    console.log(12,this.User)
+    this.loginFlag = this.defines.login
   },
   methods: {
     handleClick() {
       this.loginFlag = !this.loginFlag;
-      this.$route.matched[0].meta.login==this.loginFlag;
+      this.defines.setlogin(this.loginFlag)
+    
     }
   }
 }
