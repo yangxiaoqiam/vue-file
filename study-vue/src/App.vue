@@ -22,8 +22,7 @@
     <router-view class="router-vue"></router-view>
 
     <router-view class="router-vue" name='community'></router-view>
-    <router-view class="router-vue" name='personal'></router-view>
-    <router-view class="router-vue" name='learn'></router-view>
+ 
 
   </div>
 </template>
@@ -64,5 +63,8 @@
       margin-left: 50px;
       font-size: 18px;
     }
+  }
+  .router-vue{
+    min-height: 500px;
   }
 </style>

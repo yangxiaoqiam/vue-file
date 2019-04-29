@@ -12,6 +12,7 @@ import Academic from './components/community/Academic.vue'
 
 import Question from './components/community/Question.vue'
 import Err from './components/Err.vue'
+const ChangeCourse=()=>import ('@/components/ChangeCourse')
 
 import User from './global'
 
@@ -106,6 +107,11 @@ const router = new Router({
 
             }
         },
+        {
+            path:'/changeCourse',
+            name:'changeCourse',
+            component:ChangeCourse
+        }
 
     ],
     mode: 'history'
